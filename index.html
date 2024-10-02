@@ -1,59 +1,197 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Slider Page with Center Indicator</title>
     <style>
-      .slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 15px;
-  border-radius: 5px;  
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%; 
-  background: #04AA6D;
-  cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #04AA6D;
-  cursor: pointer;
-}
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 100%;
+        }
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+            margin-bottom: 20px;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            border: 0;
+            background: url('/api/placeholder/30/30') no-repeat;
+            background-size: 30px 30px;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 30px;
+            height: 30px;
+            border: 0;
+            background: url('/api/placeholder/30/30') no-repeat;
+            background-size: 30px 30px;
+            cursor: pointer;
+        }
+        .center-indicator {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 25px;
+            background-color: #000;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+        #slider-value {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            color: #4CAF50;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 1rem;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
     </style>
-    <script>
-      function GetRandom() {
-  var myElement = document.getElementById("pwbx")
-  myElement.value = Math.random()-.5
-}
-
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
-  output.innerHTML = this.value;
-}
-    </script>
-  </head>
-  <body onload="GetRandom()">
-    <div class="slidecontainer">
-      <form action="action_page.php">
-      <input type="Textbox" id="pwbx" />
-      <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-      <input type="submit" value="submit" />
-      </form>
+</head>
+<body>
+    <div class="container">
+        <h1>Slider with Center Indicator</h1>
+        <form id="sliderForm" action="/thank-you.html" method="GET">
+            <div class="form-group">
+                <label for="myDropdown">Select a number:</label>
+                <select id="myDropdown" name="selectedNumber">
+                    <option value="">Please select</option>
+                </select>
+            </div>
+            <div class="form-group slider-container">
+                <label for="mySlider">Adjust the slider:</label>
+                <input type="range" min="1" max="100" value="50" class="slider" id="mySlider" name="sliderValue">
+                <div class="center-indicator"></div>
+                <div id="slider-value">50</div>
+            </div>
+            <input type="hidden" id="randomNumber" name="randomNumber" value="">
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
     </div>
-  </body>
+
+    <script>
+        const slider = document.getElementById("mySlider");
+        const output = document.getElementById("slider-value");
+        const randomField = document.getElementById("randomNumber");
+        const dropdown = document.getElementById("myDropdown");
+        const form = document.getElementById("sliderForm");
+
+        // Function to get query string parameter
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Populate dropdown
+        for (let i = 0; i <= 20; i++) {
+            let option = document.createElement("option");
+            option.value = i;
+            option.text = i;
+            dropdown.appendChild(option);
+        }
+
+        // Pre-populate dropdown based on query string
+        const preSelectedNumber = getQueryParam('number-select');
+        if (preSelectedNumber !== null && dropdown.querySelector(`option[value="${preSelectedNumber}"]`)) {
+            dropdown.value = preSelectedNumber;
+        }
+
+        // Update the slider value display
+        slider.oninput = function() {
+            output.innerHTML = this.value;
+        }
+
+        // Generate a random number between 1 and 1000000
+        function generateRandomNumber() {
+            return Math.floor(Math.random() * 1000000) + 1;
+        }
+
+        // Set the random number when the page loads
+        randomField.value = generateRandomNumber();
+
+        // Handle form submission
+        form.onsubmit = function(e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            // Get the selected number from the dropdown
+            const selectedNumber = dropdown.value;
+            
+            // Generate the thank you URL with the query parameter
+            let thankYouUrl = "/thank-you.html?selectedNumber=" + encodeURIComponent(selectedNumber);
+            
+            // Append other form values if needed
+            thankYouUrl += "&sliderValue=" + encodeURIComponent(slider.value);
+            thankYouUrl += "&randomNumber=" + encodeURIComponent(randomField.value);
+            
+            // Redirect to the thank you page
+            window.location.href = thankYouUrl;
+        };
+    </script>
+</body>
 </html>
