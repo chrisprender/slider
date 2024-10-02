@@ -117,7 +117,7 @@
 <body>
     <div class="container">
         <h1>Slider with Center Indicator</h1>
-        <form id="sliderForm" action="/thank-you.html" method="GET">
+        <form id="sliderForm" name="submit-to-google-sheet">
             <div class="form-group">
                 <label for="myDropdown">Select a number:</label>
                 <select id="myDropdown" name="selectedNumber">
@@ -134,7 +134,17 @@
             <button type="submit" class="submit-btn">Submit</button>
         </form>
     </div>
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxRsEr2C46dcsYvJMaV_6iZFmHieMFzFNHEkJsKE5R9EeZQxhNHD9Yfuok4R3O14dxD/exec'
+  const form = document.forms['submit-to-google-sheet']
 
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => console.log('Success!', response))
+      .catch(error => console.error('Error!', error.message))
+  })
+</script>
     <script>
         const slider = document.getElementById("mySlider");
         const output = document.getElementById("slider-value");
