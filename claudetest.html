@@ -6,7 +6,7 @@
     <title>Slider with Center Indicator</title>
     <style>
         body {
-            background-color: #ffff00;
+            background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -65,9 +65,9 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
-            background: url('https://via.placeholder.com/20') no-repeat center center;
+            width: 40px;
+            height: 40px;
+            background: url('https://images.lemonly.com/wp-content/uploads/2017/07/27052324/cropped-cropped-lemonly-logo-2-320x320.png') no-repeat center center;
             background-size: cover;
             cursor: pointer;
             border: none;
@@ -120,6 +120,12 @@
     </div>
 
     <script>
+        // Function to get query parameter value
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
         // Function to generate a random number between 1 and 100
         function generateRandomNumber() {
             return Math.floor(Math.random() * 100) + 1;
@@ -145,7 +151,7 @@
 
             // Add the random number to the form data
             const randomNumber = generateRandomNumber();
-            formData.append('random_number', randomNumber);
+            formData.set('random_number', randomNumber);
 
             // Convert form data to URL-encoded string
             const urlEncodedData = new URLSearchParams(formData).toString();
@@ -173,11 +179,11 @@
             const slider = document.getElementById('slider');
             const dropdown = document.getElementById('dropdown');
 
-            // Initialize the random number field
-            const randomNumberField = document.createElement('input');
-            randomNumberField.type = 'hidden';
-            randomNumberField.name = 'random_number';
-            form.appendChild(randomNumberField);
+            // Pre-populate dropdown based on query string
+            const preSelectedNumber = getQueryParam('number-select');
+            if (preSelectedNumber !== null && dropdown.querySelector(`option[value="${preSelectedNumber}"]`)) {
+                dropdown.value = preSelectedNumber;
+            }
 
             // Event listener for slider input
             slider.addEventListener('input', function() {
