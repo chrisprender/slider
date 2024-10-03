@@ -149,6 +149,12 @@
     </div>
 
     <script>
+        // Pre-populate dropdown based on query string
+        const preSelectedNumber = getQueryParam('number-select');
+        if (preSelectedNumber !== null && dropdown.querySelector(`option[value="${preSelectedNumber}"]`)) {
+            dropdown.value = preSelectedNumber;
+        }
+        
         // Function to generate a random number between 1 and 100
         function generateRandomNumber() {
             return Math.floor(Math.random() * 100) + 1;
