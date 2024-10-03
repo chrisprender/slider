@@ -135,73 +135,79 @@
         </form>
     </div>
 <script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbw-BTB4_2ca4n7qLsBDwoFIgUuDMlGVrIFvRWy_e1KsH-HFvl0-umaGvndsgUNn7il6/exec'
-  const form = document.forms['submit-to-google-sheet']
+// Function to generate a random number between 1 and 100
+function generateRandomNumber() {
+    return Math.floor(Math.random() * 100) + 1;
+}
 
-  form.addEventListener('submit', e => {
-    e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      .then(response => console.log('Success!', response))
-      .catch(error => console.error('Error!', error.message))
-  })
+// Function to update the slider value display
+function updateSliderValue(value) {
+    document.getElementById('slider-value').textContent = value;
+}
+
+// Function to update the center indicator position
+function updateCenterIndicator(value) {
+    const centerIndicator = document.querySelector('.center-indicator');
+    const percentage = (value - 1) / 99 * 100;
+    centerIndicator.style.left = `${percentage}%`;
+}
+
+// Function to handle form submission
+function handleSubmit(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // Add the random number to the form data
+    const randomNumber = generateRandomNumber();
+    formData.append('random_number', randomNumber);
+
+    // Convert form data to URL-encoded string
+    const urlEncodedData = new URLSearchParams(formData).toString();
+
+    // Construct the thank you page URL with query parameters
+    const thankYouUrl = `/thank-you.html?${urlEncodedData}`;
+
+    // Submit the form data to the specific Google script URL
+    fetch('https://script.google.com/macros/s/AKfycbw-BTB4_2ca4n7qLsBDwoFIgUuDMlGVrIFvRWy_e1KsH-HFvl0-umaGvndsgUNn7il6/exec', {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+    }).then(() => {
+        // Redirect to the thank you page after successful submission
+        window.location.href = thankYouUrl;
+    }).catch(error => {
+        console.error('Error:', error);
+        // Handle error if needed
+    });
+}
+
+// Event listener for DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const slider = document.getElementById('slider');
+    const dropdown = document.getElementById('dropdown');
+
+    // Initialize the random number field
+    const randomNumberField = document.createElement('input');
+    randomNumberField.type = 'hidden';
+    randomNumberField.name = 'random_number';
+    form.appendChild(randomNumberField);
+
+    // Event listener for slider input
+    slider.addEventListener('input', function() {
+        updateSliderValue(this.value);
+        updateCenterIndicator(this.value);
+    });
+
+    // Event listener for form submission
+    form.addEventListener('submit', handleSubmit);
+
+    // Initialize slider value and center indicator
+    updateSliderValue(slider.value);
+    updateCenterIndicator(slider.value);
+});
 </script>
-    <script>
-        const slider = document.getElementById("mySlider");
-        const output = document.getElementById("slider-value");
-        const randomField = document.getElementById("randomNumber");
-        const dropdown = document.getElementById("myDropdown");
-        const form = document.getElementById("sliderForm");
-
-        // Function to get query string parameter
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
-
-        // Populate dropdown
-        for (let i = 0; i <= 20; i++) {
-            let option = document.createElement("option");
-            option.value = i;
-            option.text = i;
-            dropdown.appendChild(option);
-        }
-
-        // Pre-populate dropdown based on query string
-        const preSelectedNumber = getQueryParam('number-select');
-        if (preSelectedNumber !== null && dropdown.querySelector(`option[value="${preSelectedNumber}"]`)) {
-            dropdown.value = preSelectedNumber;
-        }
-
-        // Update the slider value display
-        slider.oninput = function() {
-            output.innerHTML = this.value;
-        }
-
-        // Generate a random number between 1 and 1000000
-        function generateRandomNumber() {
-            return Math.floor(Math.random() * 1000000) + 1;
-        }
-
-        // Set the random number when the page loads
-        randomField.value = generateRandomNumber();
-
-        // Handle form submission
-        form.onsubmit = function(e) {
-            e.preventDefault(); // Prevent default form submission
-            
-            // Get the selected number from the dropdown
-            const selectedNumber = dropdown.value;
-            
-            // Generate the thank you URL with the query parameter
-            let thankYouUrl = "/slider/thank-you.html?selectedNumber=" + encodeURIComponent(selectedNumber);
-            
-            // Append other form values if needed
-            thankYouUrl += "&sliderValue=" + encodeURIComponent(slider.value);
-            thankYouUrl += "&randomNumber=" + encodeURIComponent(randomField.value);
-            
-            // Redirect to the thank you page
-            window.location.href = thankYouUrl;
-        };
-    </script>
 </body>
 </html>
