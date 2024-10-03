@@ -169,7 +169,9 @@
             const thankYouUrl = `/thank-you.html?${urlEncodedData}`;
 
             // Redirect to the thank you page immediately
-            window.location.href = thankYouUrl;
+                    setTimeout(function() {
+                        window.location.href = thankYouUrl;
+                    }, 2000); // 2-second delay
 
             // Submit the form data to the specific Google script URL in the background
             fetch(form.action, {
