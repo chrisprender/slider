@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f000f0;
+            background-color: #f0f000;
         }
         .container {
             background-color: white;
@@ -117,8 +117,7 @@
 <body>
     <div class="container">
         <h1>Slider with Center Indicator</h1>
-        <form id="sliderForm" action="https://hooks.zapier.com/hooks/catch/1731090/2mdw31f/" method="POST" 
-  enctype="multipart/form-data">
+        <form id="sliderForm" method="POST">
             <div class="form-group">
                 <label for="myDropdown">Select a number:</label>
                 <select id="myDropdown" name="selectedNumber">
@@ -135,7 +134,17 @@
             <button type="submit" class="submit-btn">Submit</button>
         </form>
     </div>
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbw-BTB4_2ca4n7qLsBDwoFIgUuDMlGVrIFvRWy_e1KsH-HFvl0-umaGvndsgUNn7il6/exec'
+  const form = document.forms['submit-to-google-sheet']
 
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => console.log('Success!', response))
+      .catch(error => console.error('Error!', error.message))
+  })
+</script>
     <script>
         const slider = document.getElementById("mySlider");
         const output = document.getElementById("slider-value");
