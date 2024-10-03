@@ -6,110 +6,90 @@
     <title>Slider with Center Indicator</title>
     <style>
         body {
+            background-color: #ffff00;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f000;
         }
         .container {
             background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
         }
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 1.5rem;
+            font-size: 24px;
+            margin-top: 0;
         }
-                .form-group {
-            margin-bottom: 1.5rem;
+        .form-group {
+            margin-bottom: 20px;
         }
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 5px;
             color: #666;
         }
-        .slider-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
+        select, input[type="range"] {
             width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .slider {
+        .slider-container {
+            position: relative;
+            padding-top: 10px;
+        }
+        .midpoint-line {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background-color: #333;
+            z-index: 1;
+        }
+        input[type="range"] {
             -webkit-appearance: none;
-            width: 100%;
-            height: 15px;
-            border-radius: 5px;
-            background: #d3d3d3;
+            height: 10px;
+            background: #ddd;
             outline: none;
             opacity: 0.7;
             transition: opacity .2s;
-            margin-bottom: 20px;
         }
-        .slider:hover {
-            opacity: 1;
-        }
-                .slider::-webkit-slider-thumb {
+        input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 30px;
-            height: 30px;
-            border: 0;
-            background: url('https://images.lemonly.com/wp-content/uploads/2017/07/27052324/cropped-cropped-lemonly-logo-2-320x320.png') no-repeat;
-            background-size: 30px 30px;
+            width: 20px;
+            height: 20px;
+            background: url('https://via.placeholder.com/20') no-repeat center center;
+            background-size: cover;
             cursor: pointer;
-        }
-        .slider::-moz-range-thumb {
-            width: 30px;
-            height: 30px;
-            border: 0;
-            background: url('https://images.lemonly.com/wp-content/uploads/2017/07/27052324/cropped-cropped-lemonly-logo-2-320x320.png') no-repeat;
-            background-size: 30px 30px;
-            cursor: pointer;
-        }
-        .center-indicator {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 2px;
-            height: 25px;
-            background-color: #000;
-            transform: translateX(-50%);
-            pointer-events: none;
+            border: none;
         }
         #slider-value {
-            font-size: 1.5rem;
-            margin-top: 1rem;
+            text-align: center;
+            font-size: 24px;
             color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
         }
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #fff;
-            font-size: 1rem;
-        }
-        .submit-btn {
-            display: block;
+        button {
             width: 100%;
             padding: 10px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+            border-radius: 4px;
+            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
-        .submit-btn:hover {
+        button:hover {
             background-color: #45a049;
         }
     </style>
@@ -122,18 +102,9 @@
                 <label for="dropdown">Select a number:</label>
                 <select id="dropdown" name="dropdown">
                     <option value="">Please select</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
                 </select>
             </div>
 
@@ -149,12 +120,6 @@
     </div>
 
     <script>
-        // Pre-populate dropdown based on query string
-        const preSelectedNumber = getQueryParam('number-select');
-        if (preSelectedNumber !== null && dropdown.querySelector(`option[value="${preSelectedNumber}"]`)) {
-            dropdown.value = preSelectedNumber;
-        }
-        
         // Function to generate a random number between 1 and 100
         function generateRandomNumber() {
             return Math.floor(Math.random() * 100) + 1;
@@ -186,7 +151,7 @@
             const urlEncodedData = new URLSearchParams(formData).toString();
 
             // Construct the thank you page URL with query parameters
-            const thankYouUrl = `/slider/thank-you.html?${urlEncodedData}`;
+            const thankYouUrl = `/thank-you.html?${urlEncodedData}`;
 
             // Redirect to the thank you page immediately
             window.location.href = thankYouUrl;
