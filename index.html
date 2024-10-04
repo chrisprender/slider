@@ -3,113 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Slider Page with Center Indicator</title>
+    <title>Slider with Center Indicator</title>
     <style>
         body {
+            background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f000;
         }
         .container {
             background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
             width: 90%;
             max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 1.5rem;
+            font-size: 24px;
+            margin-top: 50px;
+            margin-bottom: 25px;
         }
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 5px;
             color: #666;
         }
-        .slider-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
+        select, input[type="range"] {
             width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            height: 40px;
         }
-        .slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 15px;
-            border-radius: 5px;
-            background: #d3d3d3;
-            outline: none;
-            opacity: 0.7;
-            transition: opacity .2s;
-            margin-bottom: 20px;
-        }
-        .slider:hover {
-            opacity: 1;
-        }
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 30px;
-            height: 30px;
-            border: 0;
-            background: url('https://images.lemonly.com/wp-content/uploads/2017/07/27052324/cropped-cropped-lemonly-logo-2-320x320.png') no-repeat;
-            background-size: 30px 30px;
-            cursor: pointer;
-        }
-        .slider::-moz-range-thumb {
-            width: 30px;
-            height: 30px;
-            border: 0;
-            background: url('https://images.lemonly.com/wp-content/uploads/2017/07/27052324/cropped-cropped-lemonly-logo-2-320x320.png') no-repeat;
-            background-size: 30px 30px;
-            cursor: pointer;
-        }
-        .center-indicator {
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding-top: 10px;
+}
+        .midpoint-line {
             position: absolute;
-            top: 0;
+            top: 25px;
             left: 50%;
             width: 2px;
-            height: 25px;
-            background-color: #000;
-            transform: translateX(-50%);
-            pointer-events: none;
+            height: 48px;
+            background-color: #f0f0f0;
+            z-index: 0;
+}
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 5px;
+            background: #f0f0f0;
+            outline: none;
+            opacity: 1;
+            transition: opacity .2s;
+            width: 280px;
+            z-index: 1;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 35px;
+            height: 35px;
+            background: url('https://images.lemonly.com/wp-content/uploads/2017/07/27052324/cropped-cropped-lemonly-logo-2-320x320.png') no-repeat center center;
+            background-size: cover;
+            cursor: pointer;
+            border: none;
         }
         #slider-value {
-            font-size: 1.5rem;
-            margin-top: 1rem;
+            text-align: center;
+            font-size: 24px;
             color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
         }
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #fff;
-            font-size: 1rem;
-        }
-        .submit-btn {
-            display: block;
+        button {
             width: 100%;
             padding: 10px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+            border-radius: 4px;
+            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
-        .submit-btn:hover {
+        button:hover {
             background-color: #45a049;
         }
     </style>
@@ -117,97 +106,107 @@
 <body>
     <div class="container">
         <h1>Slider with Center Indicator</h1>
-        <form id="sliderForm" method="POST">
+        <form id="myForm" action="https://script.google.com/macros/s/AKfycbw-BTB4_2ca4n7qLsBDwoFIgUuDMlGVrIFvRWy_e1KsH-HFvl0-umaGvndsgUNn7il6/exec" method="POST">
             <div class="form-group">
-                <label for="myDropdown">Select a number:</label>
-                <select id="myDropdown" name="selectedNumber">
+                <label for="dropdown">Select a number:</label>
+                <select id="dropdown" name="dropdown">
                     <option value="">Please select</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
                 </select>
             </div>
+
             <div class="form-group slider-container">
-                <label for="mySlider">Adjust the slider:</label>
-                <input type="range" min="1" max="100" value="50" class="slider" id="mySlider" name="sliderValue">
-                <div class="center-indicator"></div>
+                <label for="slider">Adjust the slider:</label>
+                <div class="midpoint-line"></div>
+                <input type="range" id="slider" name="slider" min="1" max="100" value="50">
                 <div id="slider-value">50</div>
             </div>
-            <input type="hidden" id="randomNumber" name="randomNumber" value="">
-            <button type="submit" class="submit-btn">Submit</button>
+
+            <button type="submit" id="submitButton">Submit</button>
         </form>
     </div>
-<script>
-// Function to generate a random number between 1 and 100
-function generateRandomNumber() {
-    return Math.floor(Math.random() * 100) + 1;
-}
 
-// Function to update the slider value display
-function updateSliderValue(value) {
-    document.getElementById('slider-value').textContent = value;
-}
+    <script>
+        // Function to get query parameter value
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
 
-// Function to update the center indicator position
-function updateCenterIndicator(value) {
-    const centerIndicator = document.querySelector('.center-indicator');
-    const percentage = (value - 1) / 99 * 100;
-    centerIndicator.style.left = `${percentage}%`;
-}
+        // Function to generate a random number between 1 and 100
+        function generateRandomNumber() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
 
-// Function to handle form submission
-function handleSubmit(event) {
-    event.preventDefault();
+        // Function to update the slider value display
+        function updateSliderValue(value) {
+            document.getElementById('slider-value').textContent = value;
+        }
 
-    const form = event.target;
-    const formData = new FormData(form);
+        // Function to handle form submission
+        function handleSubmit(event) {
+            event.preventDefault();
 
-    // Add the random number to the form data
-    const randomNumber = generateRandomNumber();
-    formData.append('random_number', randomNumber);
+            const form = event.target;
+            const submitButton = document.getElementById('submitButton');
+            
+            // Disable the submit button to prevent multiple submissions
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
 
-    // Convert form data to URL-encoded string
-    const urlEncodedData = new URLSearchParams(formData).toString();
+            const formData = new FormData(form);
 
-    // Construct the thank you page URL with query parameters
-    const thankYouUrl = `/thank-you.html?${urlEncodedData}`;
+            // Add the random number to the form data
+            const randomNumber = generateRandomNumber();
+            formData.set('random_number', randomNumber);
 
-    // Submit the form data to the specific Google script URL
-    fetch('https://script.google.com/macros/s/AKfycbw-BTB4_2ca4n7qLsBDwoFIgUuDMlGVrIFvRWy_e1KsH-HFvl0-umaGvndsgUNn7il6/exec', {
-        method: 'POST',
-        body: formData,
-        mode: 'no-cors'
-    }).then(() => {
-        // Redirect to the thank you page after successful submission
-        window.location.href = thankYouUrl;
-    }).catch(error => {
-        console.error('Error:', error);
-        // Handle error if needed
-    });
-}
+            // Convert form data to URL-encoded string
+            const urlEncodedData = new URLSearchParams(formData).toString();
 
-// Event listener for DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
-    const slider = document.getElementById('slider');
-    const dropdown = document.getElementById('dropdown');
+            // Construct the thank you page URL with query parameters
+            const thankYouUrl = `/thank-you.html?${urlEncodedData}`;
 
-    // Initialize the random number field
-    const randomNumberField = document.createElement('input');
-    randomNumberField.type = 'hidden';
-    randomNumberField.name = 'random_number';
-    form.appendChild(randomNumberField);
+            // Redirect to the thank you page immediately
+                    setTimeout(function() {
+                        window.location.href = thankYouUrl;
+                    }, 2000); // 2-second delay
 
-    // Event listener for slider input
-    slider.addEventListener('input', function() {
-        updateSliderValue(this.value);
-        updateCenterIndicator(this.value);
-    });
+            // Submit the form data to the specific Google script URL in the background
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            }).catch(error => {
+                console.error('Error:', error);
+                // Handle error if needed
+            });
+        }
 
-    // Event listener for form submission
-    form.addEventListener('submit', handleSubmit);
+        // Event listener for DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('myForm');
+            const slider = document.getElementById('slider');
+            const dropdown = document.getElementById('dropdown');
 
-    // Initialize slider value and center indicator
-    updateSliderValue(slider.value);
-    updateCenterIndicator(slider.value);
-});
-</script>
+            // Pre-populate dropdown based on query string
+            const preSelectedNumber = getQueryParam('number-select');
+            if (preSelectedNumber !== null && dropdown.querySelector(`option[value="${preSelectedNumber}"]`)) {
+                dropdown.value = preSelectedNumber;
+            }
+
+            // Event listener for slider input
+            slider.addEventListener('input', function() {
+                updateSliderValue(this.value);
+            });
+
+            // Event listener for form submission
+            form.addEventListener('submit', handleSubmit);
+
+            // Initialize slider value
+            updateSliderValue(slider.value);
+        });
+    </script>
 </body>
 </html>
