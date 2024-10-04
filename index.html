@@ -68,7 +68,7 @@
             outline: none;
             opacity: 1;
             transition: opacity .2s;
-            width: 100px;
+            width: 100%;
             z-index: 1;
         }
         input[type="range"]::-webkit-slider-thumb {
@@ -166,7 +166,7 @@
             const urlEncodedData = new URLSearchParams(formData).toString();
 
             // Construct the thank you page URL with query parameters
-            const thankYouUrl = `/thank-you.html?${urlEncodedData}`;
+            const thankYouUrl = `/slider/thank-you.html?${urlEncodedData}`;
 
             // Redirect to the thank you page immediately
                     setTimeout(function() {
