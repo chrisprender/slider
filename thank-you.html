@@ -69,18 +69,26 @@
 </head>
 <body>
     <div class="container">
-        <h1>#1 submitted!</h1>
-        
-
-        <a href="/slider/index.html?number-select=2"><button type="submit" id="submitButton">Continue to #2</button></a>
+        <h1 id="submissionTitle">Answer submitted!</h1>
+        <a id="continueLink" href="/slider/index.html"><button type="submit" id="submitButton">Continue</button></a>
     </div>
 
     <script>
-        // Function to get query parameter value
-        function getQueryParam(param) {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the 'dropdown' query parameter
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
+            const lastQuestion = parseInt(urlParams.get('dropdown')) || 1;
+
+            // Update the h1 text
+            const submissionTitle = document.getElementById('submissionTitle');
+            submissionTitle.textContent = `#${lastQuestion} submitted!`;
+
+            // Update the button text and link
+            const continueLink = document.getElementById('continueLink');
+            const nextQuestion = lastQuestion + 1;
+            continueLink.textContent = `Continue to #${nextQuestion}`;
+            continueLink.href = `/slider/index.html?number-select=${nextQuestion}`;
+        });
     </script>
 </body>
 </html>
